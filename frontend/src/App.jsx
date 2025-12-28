@@ -1,29 +1,20 @@
-import { useRef } from 'react';
+import { useState } from 'react';
+import Chalkboard from './Chalkboard';
+import Search from '../Search';
 import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
-  const urlRef = useRef(null);
-
-  async function submitURL() {
-    const options = {
-      method: 'GET',
-    }
-
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}get_chalkboard_data?url=${urlRef.current?.value}`, options);
-      const data = await res.json();
-      console.log(data)
-    }
-    catch(err) {
-      console.error(err);
-    }
-  }
+  const [matchData, setMatchData] = useState(null);
 
   return (
     <>
-      <h1>Enter Whoscored URL</h1>
-      <input ref={urlRef} placeholder='whoscored url'/>
-      <button onClick={submitURL}>Submit</button>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Search setMatchData={setMatchData}/>}/>
+          <Route path="/chalkboard" element={<Chalkboard matchData={matchData}/>}/>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
