@@ -3,6 +3,7 @@ import Pitch from './Components/Pitch';
 import './Chalkboard.css';
 import { useEffect, useRef, useState } from 'react';
 import useWindowDimension from './Window';
+import SquadList from './Components/SquadList';
 
 function getPasses(data) {
   console.log(data);
@@ -10,11 +11,19 @@ function getPasses(data) {
   return pass;
 }
 
+function getSquadList(data, isHome) {
+  const squad = data['matchCentreData'][isHome ? 'home' : 'away']['players'];
+  return squad
+}
+
 function Chalkboard(props) {
   const pitchContainerRef = useRef(null);
   const [pitchContainerRect, setPitchContainerRect] = useState({'width': 0, 'height': 0});
   const [passData, setPassData] = useState([]);
+  const [homeSquadList, setHomeSquadList] = useState([]);
+  const [awaySquadList, setAwaySquadList] = useState([]);
   const windowDimensions = useWindowDimension();
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
 
   useEffect(() => {
     if (pitchContainerRef.current) {
@@ -22,6 +31,8 @@ function Chalkboard(props) {
     }
     if(props.matchData){
       setPassData(getPasses(props.matchData));
+      setHomeSquadList(getSquadList(props.matchData, true));
+      setAwaySquadList(getSquadList(props.matchData, false));
     }
   }, [props.matchData]);
 
@@ -30,6 +41,26 @@ function Chalkboard(props) {
       console.error(props.matchData["message"]);
     }
     return <Navigate to="/"/>
+  }
+
+  function selectPlayer(playerId) {
+    const selected = selectedPlayers;
+    selected.push(playerId);
+    setSelectedPlayers(selected);
+  }
+
+  function deselectPlayer(playerId) {
+    const selected = selectedPlayers;
+    const filtered = selected.filter(item => item !== playerId); 
+    setSelectedPlayers(filtered);
+  }
+
+  function clearSelectedPlayers() {
+    setSelectedPlayers([]);
+  }
+
+  function isSelected(playerId) {
+    return selectedPlayers.includes(playerId);
   }
 
   return (
@@ -41,8 +72,21 @@ function Chalkboard(props) {
         <Pitch window={windowDimensions} pitchContainerRect={pitchContainerRect} passData={passData} playerData={props.matchData['matchCentreData']['playerIdNameDictionary']}/>
       </div>
       <div>
-        <h1>{props.matchData["matchCentreData"]["home"]["name"]}</h1>
-        <h1>{props.matchData["matchCentreData"]["away"]["name"]}</h1>
+        <SquadList 
+          squadList={homeSquadList} 
+          isHome={true} 
+          selectPlayer={selectPlayer} 
+          deselectPlayer={deselectPlayer}
+          isSelected={isSelected}
+        />
+        <SquadList 
+          squadList={awaySquadList} 
+          isHome={false} 
+          selectPlayer={selectPlayer} 
+          deselectPlayer={deselectPlayer}
+          isSelected={isSelected}
+        />
+        <button onClick={clearSelectedPlayers}>clear</button>
       </div>
     </div>
   );

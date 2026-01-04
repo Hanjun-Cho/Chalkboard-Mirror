@@ -28,7 +28,8 @@ function createArrowChart(data, playerData, pitchRect) {
   container.style.position = "relative";
 
   // Tooltip
-  container.appendChild(createToolTip());
+  const tooltip = createToolTip()
+  container.appendChild(tooltip);
 
   // SVG
   const svg = d3.select(container).append("svg");
@@ -131,8 +132,6 @@ function PassMap(props) {
     const map = document.getElementById('map');
     map.innerHTML = "";
     map.append(chart);
-
-    console.log(props.pitchRect, chart);
   }, [props.passData, props.pitchRect]);
 
   const passMapStyle = {
