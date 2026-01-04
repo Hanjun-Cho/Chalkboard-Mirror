@@ -4,15 +4,28 @@ import Window from './Window';
 import './Chalkboard.css';
 import { useEffect, useRef, useState } from 'react';
 
+
+
+function getPasses(data) {
+  console.log(data);
+  const pass = data['matchCentreData']['events'].filter(type => type['type']['displayName'] === "Pass");
+  return pass;
+}
+
+
 function Chalkboard(props) {
   const pitchContainerRef = useRef(null);
   const [pitchContainerRect, setPitchContainerRect] = useState({'height': 0});
+  const [passData, setPassData] = useState([]);
 
   useEffect(() => {
     if (pitchContainerRef.current) {
       setPitchContainerRect(pitchContainerRef.current.getBoundingClientRect());
     }
-  }, []);
+    if(props.matchData){
+      setPassData(getPasses(props.matchData));
+    }
+  }, [props.matchData]);
 
   if (!props.matchData || props.matchData["status"] == "FAIL") {
     if(props.matchData) {
@@ -20,10 +33,9 @@ function Chalkboard(props) {
     }
     return <Navigate to="/"/>
   }
-
   return (
     <div ref={pitchContainerRef} className="chalkboard-container">
-      <Pitch window={Window} pitchContainerRect={pitchContainerRect}/>
+      <Pitch window={Window} pitchContainerRect={pitchContainerRect} passData={passData} playerData={props.matchData['matchCentreData']['playerIdNameDictionary']}/>
       <h1>{props.matchData["matchCentreData"]["home"]["name"]}</h1>
       <h1>{props.matchData["matchCentreData"]["away"]["name"]}</h1>
     </div>

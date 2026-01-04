@@ -8,7 +8,7 @@
   height: calc(100% - 60px);
   aspect-ratio: 65/105;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   top: 50%;
   transform: translate(0, -50%);
 }
