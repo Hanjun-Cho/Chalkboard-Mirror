@@ -1,0 +1,17 @@
+.squadlist-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.squadlist-player {
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 20px;
+  border-radius: 6px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+

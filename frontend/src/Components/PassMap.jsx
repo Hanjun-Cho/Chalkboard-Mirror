@@ -366,8 +366,6 @@ function PassMap(props) {
     const map = document.getElementById('map');
     map.innerHTML = "";
     map.append(chart);
-
-    console.log(props.pitchRect, chart);
   }, [props.passData, props.pitchRect]);
 
   const passMapStyle = {

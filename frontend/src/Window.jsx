@@ -7,7 +7,6 @@ export const WINDOW = {
 
 function getWindowDimension() {
   const { innerWidth: width, innerHeight: height} = window;
-  console.log(width, height);
   return { width, height };
 }
 

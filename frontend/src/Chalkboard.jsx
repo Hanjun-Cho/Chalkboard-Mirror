@@ -3,6 +3,7 @@ import Pitch from './Components/Pitch';
 import './Chalkboard.css';
 import { useEffect, useRef, useState } from 'react';
 import useWindowDimension from './Window';
+import SquadList from './Components/SquadList';
 
 function getPasses(data) {
   console.log(data);
@@ -23,12 +24,20 @@ function getTeams(data) {
   return team;
 }
 
+function getSquadList(data, isHome) {
+  const squad = data['matchCentreData'][isHome ? 'home' : 'away']['players'];
+  return squad
+}
+
 function Chalkboard(props) {
   const pitchContainerRef = useRef(null);
-  const [pitchContainerRect, setPitchContainerRect] = useState({'height': 0});
+  const [pitchContainerRect, setPitchContainerRect] = useState({'width': 0, 'height': 0});
   const [passData, setPassData] = useState(null);
   const [teamData, setTeamData] = useState(null);
+  const [homeSquadList, setHomeSquadList] = useState([]);
+  const [awaySquadList, setAwaySquadList] = useState([]);
   const windowDimensions = useWindowDimension();
+  const [selectedPlayers, setSelectedPlayers] = useState([]);
 
   useEffect(() => {
     if (pitchContainerRef.current) {
@@ -37,6 +46,8 @@ function Chalkboard(props) {
     if(props.matchData){
       setPassData(getPasses(props.matchData));
       setTeamData(getTeams(props.matchData));
+      setHomeSquadList(getSquadList(props.matchData, true));
+      setAwaySquadList(getSquadList(props.matchData, false));
     }
   }, [props.matchData]);
 
@@ -47,14 +58,51 @@ function Chalkboard(props) {
     return <Navigate to="/"/>
   }
 
+  function selectPlayer(playerId) {
+    const selected = selectedPlayers;
+    selected.push(playerId);
+    setSelectedPlayers(selected);
+  }
+
+  function deselectPlayer(playerId) {
+    const selected = selectedPlayers;
+    const filtered = selected.filter(item => item !== playerId); 
+    setSelectedPlayers(filtered);
+  }
+
+  function clearSelectedPlayers() {
+    setSelectedPlayers([]);
+  }
+
+  function isSelected(playerId) {
+    return selectedPlayers.includes(playerId);
+  }
+
   return (
-    <div ref={pitchContainerRef} className="chalkboard-container">
-      <Pitch window={windowDimensions} pitchContainerRect={pitchContainerRect} 
-      passData={passData} 
-      teamData={teamData}
-      playerData={props.matchData['matchCentreData']['playerIdNameDictionary']}/>
-      <h1>{props.matchData["matchCentreData"]["home"]["name"]}</h1>
-      <h1>{props.matchData["matchCentreData"]["away"]["name"]}</h1>
+    <div className='chalkboard-container' style={{
+      display: 'grid',
+      gridTemplateColumns: `calc((${windowDimensions.height}px - var(--WEBSITE_BORDER_SPACING)) * (65/105)) auto`,
+    }}>
+      <div ref={pitchContainerRef} className="pitch-outer-container">
+        <Pitch window={windowDimensions} pitchContainerRect={pitchContainerRect} passData={passData} teamData={teamData} playerData={props.matchData['matchCentreData']['playerIdNameDictionary']}/>
+      </div>
+      <div>
+        <SquadList 
+          squadList={homeSquadList} 
+          isHome={true} 
+          selectPlayer={selectPlayer} 
+          deselectPlayer={deselectPlayer}
+          isSelected={isSelected}
+        />
+        <SquadList 
+          squadList={awaySquadList} 
+          isHome={false} 
+          selectPlayer={selectPlayer} 
+          deselectPlayer={deselectPlayer}
+          isSelected={isSelected}
+        />
+        <button onClick={clearSelectedPlayers}>clear</button>
+      </div>
     </div>
   );
 }

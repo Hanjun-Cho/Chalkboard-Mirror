@@ -11,7 +11,6 @@ function Pitch(props) {
   useEffect(() => {
     if(pitchRef.current) {
       setPitchRect(pitchRef.current.getBoundingClientRect());
-      console.log("test")
     }
   }, [props.window]);
 
