@@ -80,7 +80,7 @@ function createArrowChart(passData, playerData, pitchRect, teamData, selectedPla
   const relative_height = pitchRect.height / 100;
   const relative_width = pitchRect.width / 100;
 
-  const blocked = passData['Blocked'];
+  let blocked = passData['Blocked'];
 
   blocked.forEach(d => {
     if (d.outcomeType) {
@@ -102,11 +102,14 @@ function createArrowChart(passData, playerData, pitchRect, teamData, selectedPla
     }
   });
 
-  //const data = passData['Pass'];
-  //data.push(...offsides);
-  let data = offsides;
+  let data = passData["Pass"];
+  data.push(...offsides)
 
-  data = data.filter(d => selectedPlayers.includes(d.playerId));
+  // Filters selected players
+  if (selectedPlayers.length !== 0) {
+    data = data.filter(d => selectedPlayers.includes(d.playerId));
+    blocked = blocked.filter(d => selectedPlayers.includes(d.playerId));
+  }
   
 
   if (!data || !Array.isArray(data)) {
@@ -137,7 +140,7 @@ function createArrowChart(passData, playerData, pitchRect, teamData, selectedPla
   };
 
   // Unselected Colors
-  const GRAY_TEAM_ID = 0;
+  const GRAY_TEAM_ID = -1;
 
   // Arrow Team color 
   const TEAM_COLORS = {
