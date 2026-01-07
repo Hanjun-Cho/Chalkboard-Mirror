@@ -2,12 +2,12 @@
   display: flex;
   flex-wrap: wrap;
   gap: 3px;
+  margin-bottom: 12px;
 }
 
 .squadlist-player {
   padding-left: 30px;
   padding-right: 30px;
-  font-size: 20px;
   border-radius: 6px;
 
   &:hover {
@@ -15,3 +15,38 @@
   }
 }
 
+@media (min-width: 901px) {
+  .squadlist-player {
+    font-size: 9px;
+    padding-left: 13px;
+    padding-right: 13px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .squadlist-player {
+    font-size: 13px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
+@media (min-width: 1919px) {
+  .squadlist-player {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .squadlist-player {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .squadlist-player {
+    font-size: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
