@@ -76,7 +76,6 @@ function createToolTip() {
 
 
 function createArrowChart(passData, playerData, pitchRect, teamData, selectedPlayers) {
-
   const relative_height = pitchRect.height / 100;
   const relative_width = pitchRect.width / 100;
 

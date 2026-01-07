@@ -59,7 +59,7 @@ function Chalkboard(props) {
   }
 
   function selectPlayer(playerId) {
-    const selected = selectedPlayers;
+    const selected = [...selectedPlayers];
     selected.push(playerId);
     setSelectedPlayers(selected);
   }
@@ -84,7 +84,13 @@ function Chalkboard(props) {
       gridTemplateColumns: `calc((${windowDimensions.height}px - var(--WEBSITE_BORDER_SPACING)) * (65/105)) auto`,
     }}>
       <div ref={pitchContainerRef} className="pitch-outer-container">
-        <Pitch window={windowDimensions} pitchContainerRect={pitchContainerRect} passData={passData} teamData={teamData} playerData={props.matchData['matchCentreData']['playerIdNameDictionary']}/>
+        <Pitch 
+          window={windowDimensions} 
+          pitchContainerRect={pitchContainerRect} 
+          passData={passData} teamData={teamData} 
+          playerData={props.matchData['matchCentreData']['playerIdNameDictionary']}
+          selectedPlayers={selectedPlayers}
+        />
       </div>
       <div>
         <SquadList 
