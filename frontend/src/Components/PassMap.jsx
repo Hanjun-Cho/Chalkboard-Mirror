@@ -55,7 +55,7 @@ function highlightSelected({
     d3.select(selectedElement)
       .attr("stroke", OUTCOME_COLORS[d.outcomeType.displayName] ?? "#999")
       .attr("marker-end", `url(#arrowhead-${d.outcomeType.displayName})`)
-      .attr("opacity", 0.8);
+      .attr("opacity", 1);
   }
 }
 
@@ -151,16 +151,16 @@ function createArrowChart(passData, playerData, pitchRect, teamData, selectedPla
 
   // Change opacities based on selection
   const TEAM_OPACITIES = {
-    [teamData.home.teamId]: .8,
-    [teamData.away.teamId]: .8,
-    [GRAY_TEAM_ID]: .8
+    [teamData.home.teamId]: 1,
+    [teamData.away.teamId]: 1,
+    [GRAY_TEAM_ID]: 1
   };
 
   // Arrow PassType Color
   const OUTCOME_COLORS = {
     Successful: "#90eeabff",
     Unsuccessful: "#d47979ff",
-    Offside: "#8a8a8a",
+    Offside: "#eb6ee9ff",
   };
 
 
