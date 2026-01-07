@@ -16,7 +16,7 @@ function Search(props) {
 
     try {
       const temp_url = `${import.meta.env.VITE_API_URL}get_chalkboard_data?url=https://www.whoscored.com/matches/1903261/live/england-premier-league-2025-2026-tottenham-sunderland`
-      // const res = await fetch(`${import.meta.env.VITE_API_URL}get_chalkboard_data?url=${urlRef.current?.value}`, options);
+      //const res = await fetch(`${import.meta.env.VITE_API_URL}get_chalkboard_data?url=${urlRef.current?.value}`, options);
       const res = await fetch(temp_url, options); 
       const data = await res.json();
       props.setMatchData(data);

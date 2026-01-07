@@ -1,6 +1,4 @@
-# Chalkboard.jsx 
-- tracks selected player filters from SquadList.jsx + SquadListPlayer.jsx
-
-### (NEW) SquadList.jsx + SquadlistPlayer.jsx + (corresponding css)
-- displays squad of home / away team
-- each player name can be selected to filter (later) actions
+## TO FIX
+- When scaling the browser down, the right side of the chalkboard is currently
+hard coded, so the pitch also gets scaled up just needs some responsiveness
+fixes with the squadlist gui
